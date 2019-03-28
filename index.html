@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<style>
+		/* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+		#map {
+			height: 425px;
+		}
+
+		/* Optional: Makes the sample page fill the window. */
+
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+
+
+	<title>Hello, world!</title>
+
+
+
+</head>
+
+<body>
+	<div class="container"></div>
+	<h1>Hello, world!</h1>
+
+	<div id="map"></div>
+
+	<!--<div id="map2"></div> --> <!-- if need another map, need another div and the script needs to add to target the other map-->
+	
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+	<script type="text/javascript" src="markerclusterer.js"></script>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQ0jk5TTy6vxRmWKjdhJD9Zo-Z1RKYLaM"></script>
+	<script>
+		// In the following example, markers appear when the user clicks on the map.
+		// Each marker is labeled with a single alphabetical character.
+		var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		var labelIndex = 0;
+
+		function initialize() {
+			var singapore = { lat: 1.35, lng: 103.8 }; //notice it is an object here
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 12,
+				center: bangalore
+			});
+
+// when get finish, the function is the callback function
+		$.get('https://api.data.gov.sg/v1/transport/taxi-availability', 
+    	function(data){
+         console.log(data);
+         let taxiCount = data.features[0].geometry.coordinates.length;
+         
+         $('#taxi-count').html("<strong>" + taxiCount + "</strong>")
+    	})
+
+
+			// Add a marker at the center of the map.
+			for (let i=0; i < tax.length; i++)
+			{
+			addMarker({lat: taxi[i][1], lng: taxi[i][0]}, map); //becoz it is object, we have to use object here. also have to see whether the data comes in lat long or long lat
+			// taxi data also comes in array
+			}
+			
+			var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+			
+			
+			// This event listener calls addMarker() when the map is clicked.
+			google.maps.event.addListener(map, 'click', function(event) {
+				addMarker(event.latLng, map);
+			});
+
+		}
+
+		// Adds a marker to the map.
+		function addMarker(location, map) {
+			// Add the marker at the clicked location, and add the next-available label
+			// from the array of alphabetical characters.
+			var marker = new google.maps.Marker({
+				position: location,
+				label: labels[labelIndex++ % labels.length],
+				map: map
+			});
+		}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+	</script>
+
+
+</body>
+
+</html>
